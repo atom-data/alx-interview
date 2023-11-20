@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/python3
 """
 Defining the function makeChange
 """
