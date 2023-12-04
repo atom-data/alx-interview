@@ -15,7 +15,7 @@ def isWinner(x, nums):
             if j % numbers[i] == 0:
                 numbers.remove(j)
 
-    for k in nums.copy():
+    for k in nums[:x].copy():
         for l in numbers.copy():
             if l <= k:
                 primes.append(l)
@@ -35,7 +35,7 @@ def isWinner(x, nums):
         most_freq = 'Maria'
         count_diff = (wsize - bcount) - bcount
 
-    if count_diff > (x - wsize) and count_diff != 0:
+    if count_diff > (x - wsize):
         return most_freq
     else:
         return None
