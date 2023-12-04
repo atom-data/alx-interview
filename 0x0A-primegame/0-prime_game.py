@@ -35,7 +35,7 @@ def isWinner(x, nums):
         most_freq = 'Maria'
         count_diff = (wsize - bcount) - bcount
 
-    if count_diff > (x - wsize) or (x - wsize) == 0:
+    if count_diff > (x - wsize) and count_diff != 0:
         return most_freq
     else:
         return None
