@@ -1,39 +1,47 @@
 #!/usr/bin/python3
-"""
-Define isWinner function
-"""
+""" Prime Game """
 
 
-def modified_sieve(n):
-    primes = [True] * (n + 1)
-    primes[0], primes[1] = False, True
+def is_prime(n):
+    """ Check if n is a prime number """
+    for i in range(2, int(n ** 0.5) + 1):
+        if not n % i:
+            return False
+    return True
 
-    p = 2
-    while p * p <= n:
-        if primes[p] == True:
-            for i in range(p * p, n + 1, p):
-                primes[i] = False
-        p += 1
 
-    return [i for i in range(n + 1) if primes[i]]
+def add_prime(n, primes):
+    """ Add prime to list """
+    last_prime = primes[-1]
+    if n > last_prime:
+        for i in range(last_prime + 1, n + 1):
+            if is_prime(i):
+                primes.append(i)
+            else:
+                primes.append(0)
+
 
 def isWinner(x, nums):
-    max_num = max(nums)
-    primes = modified_sieve(max_num)
-
+    """ x is the number of rounds and nums is an array of n
+    Return: name of the player that won the most rounds
+    If the winner cannot be determined, return None """
     score = {"Maria": 0, "Ben": 0}
+    primes = [0, 0, 2]
+    add_prime(max(nums), primes)
 
-    for n in nums:
-        prime_count = sum((i in primes) for i in range(n + 1))
-        if prime_count % 2 == 0:
-            score["Maria"] += 1
+    for round in range(x):
+        _sum = sum((i != 0 and i <= nums[round])
+                   for i in primes[:nums[round] + 1])
+        if (_sum % 2):
+            winner = "Maria"
         else:
-            score["Ben"] += 1
+            winner = "Ben"
+        if winner:
+            score[winner] += 1
 
     if score["Maria"] > score["Ben"]:
         return "Maria"
     elif score["Ben"] > score["Maria"]:
         return "Ben"
-    else:
-        return None
 
+    return None
