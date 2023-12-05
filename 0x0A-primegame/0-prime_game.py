@@ -4,38 +4,36 @@ Define isWinner function
 """
 
 
+def modified_sieve(n):
+    primes = [True] * (n + 1)
+    primes[0], primes[1] = False, True
+
+    p = 2
+    while p * p <= n:
+        if primes[p] == True:
+            for i in range(p * p, n + 1, p):
+                primes[i] = False
+        p += 1
+
+    return [i for i in range(n + 1) if primes[i]]
+
 def isWinner(x, nums):
-    primes = []
-    winner_lst = []
-    max_elem = max(nums)
-    numbers = [i for i in range(1, max_elem + 1)]
+    max_num = max(nums)
+    primes = modified_sieve(max_num)
 
-    for i in range(1, len(numbers)):
-        for j in numbers[i + 1:].copy():
-            if j % numbers[i] == 0:
-                numbers.remove(j)
+    score = {"Maria": 0, "Ben": 0}
 
-    for k in nums[:x].copy():
-        for l in numbers.copy():
-            if l <= k:
-                primes.append(l)
-        psize = len(primes)
-        if psize % 2 == 0:
-            winner_lst.append('Maria')
+    for n in nums:
+        prime_count = sum((i in primes) for i in range(n + 1))
+        if prime_count % 2 == 0:
+            score["Maria"] += 1
         else:
-            winner_lst.append('Ben')
-        primes.clear()
+            score["Ben"] += 1
 
-    bcount = winner_lst.count('Ben')
-    wsize = len(winner_lst)
-    if bcount > (wsize - bcount):
-        most_freq = 'Ben'
-        count_diff = bcount - (wsize - bcount)
-    else:
-        most_freq = 'Maria'
-        count_diff = (wsize - bcount) - bcount
-
-    if count_diff > (x - wsize):
-        return most_freq
+    if score["Maria"] > score["Ben"]:
+        return "Maria"
+    elif score["Ben"] > score["Maria"]:
+        return "Ben"
     else:
         return None
+
